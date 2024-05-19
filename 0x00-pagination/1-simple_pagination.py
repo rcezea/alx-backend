@@ -34,8 +34,4 @@ class Server:
         assert isinstance(page_size, int) and page_size > 0
 
         index = index_range(page, page_size)
-        with open(self.DATA_FILE) as f:
-            reader = csv.reader(f)
-            dataset = [row for row in reader]
-        self.__dataset = dataset[index[0]:index[1]]
-        return self.__dataset
+        return self.dataset()[index[0]:index[1]]
