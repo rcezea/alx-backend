@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import csv
+import math
 from typing import List, Tuple
 
 
@@ -35,5 +36,5 @@ class Server:
         assert isinstance(page_size, int)
         assert page_size > 0
 
-        start, stop = index_range(page=page, page_size=page_size)
-        return self.dataset()[start:stop]
+        index = index_range(page, page_size)
+        return self.dataset()[index[0]:index[1]]
