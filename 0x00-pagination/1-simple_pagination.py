@@ -30,7 +30,10 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """ return with the page with index"""
-        assert type(page) is int and type(page_size) is int \
-               and page > 0 and page_size > 0
+        assert isinstance(page, int)
+        assert page > 0
+        assert isinstance(page_size, int)
+        assert page_size > 0
+
         index = index_range(page, page_size)
         return self.dataset()[index[0]:index[1]]
