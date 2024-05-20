@@ -5,9 +5,10 @@ from typing import List, Tuple
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """ return a tuple of size two containing
-    a start index and an end index """
-    return (page - 1) * page_size, page * page_size
+    """return the starts and end index of a page"""
+    stop = page * page_size
+    start = stop - page_size
+    return start, stop
 
 
 class Server:
@@ -34,5 +35,4 @@ class Server:
         assert isinstance(page, int) and isinstance(page_size, int)
         assert page > 0 and page_size > 0
         i, j = index_range(page, page_size)
-        data = self.dataset()
-        return data[i:j]
+        return self.dataset()[i:j]
