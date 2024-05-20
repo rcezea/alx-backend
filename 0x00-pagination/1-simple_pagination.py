@@ -4,7 +4,7 @@ import math
 from typing import List, Tuple
 
 
-def index_range(page: int, page_size: int) -> Tuple:
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """ return a tuple of size two containing
     a start index and an end index """
     return (page - 1) * page_size, page * page_size
@@ -29,7 +29,7 @@ class Server:
 
         return self.__dataset
 
-    def get_page(self, page: int = 1, page_size: int = 10) -> list[List]:
+    def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """ return with the page with index"""
         assert isinstance(page, int) and isinstance(page_size, int)
         assert page > 0 and page_size > 0
