@@ -5,8 +5,9 @@ from base_caching import BaseCaching
 
 
 class LIFOCache(BaseCaching):
+    """Basic Caching class"""
     def put(self, key, item):
-        """Basic Caching class"""
+        """ Add an item in the cache """
         if key and item:
             if key in self.cache_data.keys():
                 self.cache_data.pop(key)
