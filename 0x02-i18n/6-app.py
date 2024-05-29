@@ -1,27 +1,24 @@
 #!/usr/bin/env python3
-""" module's doc str """
-
-
-from typing import Dict, Union
+"""A Basic Flask app with internationalization support.
+"""
 from flask_babel import Babel
-from flask import Flask, render_template, g, request
+from typing import Union, Dict
+from flask import Flask, render_template, request, g
 
 
-app = Flask(__name__)
-babel = Babel(app, default_locale="en", default_timezone="UTC")
-
-
-class Config(object):
-    """config for babel"""
-
+class Config:
+    """Represents a Flask Babel configuration.
+    """
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
+app = Flask(__name__)
 app.config.from_object(Config)
-
-users: Dict[int, Dict] = {
+app.url_map.strict_slashes = False
+babel = Babel(app)
+users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
     2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
     3: {"name": "Spock", "locale": "kg", "timezone": "Vulcan"},
@@ -30,32 +27,39 @@ users: Dict[int, Dict] = {
 
 
 def get_user() -> Union[Dict, None]:
-    """gets user"""
-    id = request.args.get("login_as", None)
-    if id:
-        try:
-            id = int(id)
-        except Exception:
-            id = None
-    return users.get(id)
+    """Retrieves a user based on a user id.
+    """
+    login_id = request.args.get('login_as', '')
+    if login_id:
+        return users.get(int(login_id), None)
+    return None
 
 
 @app.before_request
-def before_request() -> Union[Dict, None]:
-    """execute before each req"""
-    g.user = get_user()
+def before_request() -> None:
+    """Performs some routines before each request's resolution.
+    """
+    user = get_user()
+    g.user = user
 
 
 @babel.localeselector
-def get_locale() -> Union[str, None]:
-    """override default fet_locale"""
-    locale = request.args.get("locale", None)
-    if locale in Config.LANGUAGES:
+def get_locale() -> str:
+    """Retrieves the locale for a web page.
+    """
+    locale = request.args.get('locale', '')
+    if locale in app.config["LANGUAGES"]:
         return locale
+    if g.user and g.user['locale'] in app.config["LANGUAGES"]:
+        return g.user['locale']
+    header_locale = request.headers.get('locale', '')
+    if header_locale in app.config["LANGUAGES"]:
+        return header_locale
     return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
-@app.route("/", strict_slashes=False)
-def index() -> str:
-    """root path"""
-    return render_template("6-index.html")
+@app.route('/')
+def get_index() -> str:
+    """The home/index page.
+    """
+    return render_template('6-index.html')
