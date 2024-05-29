@@ -59,7 +59,3 @@ def get_locale() -> Union[str, None]:
 def index() -> str:
     """root path"""
     return render_template("6-index.html")
-
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
