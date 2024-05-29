@@ -2,7 +2,7 @@
 """ module's doc str """
 
 
-from typing import List, Dict, Union, Sequence, Callable, Any
+from typing import Dict, Union
 from flask_babel import Babel
 from flask import Flask, render_template, g, request
 
