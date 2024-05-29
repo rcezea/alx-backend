@@ -58,7 +58,7 @@ def get_locale() -> Union[str, None]:
 @app.route("/", strict_slashes=False)
 def index() -> str:
     """root path"""
-    return render_template("5-index.html")
+    return render_template("6-index.html")
 
 
 if __name__ == "__main__":
